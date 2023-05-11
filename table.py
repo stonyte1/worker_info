@@ -9,7 +9,7 @@ class Worker(Base):
     id = Column(Integer, primary_key=True)
     name = Column('Name', String)
     surname = Column('Surname', String)
-    birth_day = Column('Birth date', DateTime)
+    birth_day = Column('Birth date', String)
     responsibility = Column('Responsibility', String)
     salary = Column('Salary', Float)
     experience = Column('Works since', DateTime, default=datetime.datetime.utcnow)

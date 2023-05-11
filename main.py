@@ -1,31 +1,36 @@
-from processing_data import data_input, data_review, data_delete, data_update
+import PySimpleGUI as sg
+from frontend import window_add, window_delete, window_update
+from processing_data import data_review
+
+headings = ['Name', 'Surname', 'Birth date', 'Position', 'Salary', 'Enter date']
+functions = ['Add', 'Update', 'Delete']
+
+workers = data_review()
+
+layout =[ 
+[sg.Text('Data processing options: ', font=('Helvetica', 20))],
+[sg.Combo(functions, key='function', enable_events=True, s=(50,70))],
+[sg.Text('WORKERS INFO: ', justification='center', font=('Helvetica', 15))],
+[sg.Table(values=workers, headings=headings, max_col_width=25, auto_size_columns=True,
+justification='center', num_rows=len(workers), key='table', enable_events=True)]
+]
+
+window = sg.Window('Workers info', layout)
 
 while True:
-    #MENIU
-    choice = int(input(' 1 - Input data \n 2 - Review data \n 3 - Delete date \n 4 - Update data \n 0 - Leave program \n'))
-    if choice == 0:
-        print('Bye')
-        break
-    elif choice == 1:
-        try:
-            data_input()
-        except:
-            print('Wrong input try again')  
-    elif choice == 2:
-        data_review()
-    elif choice == 3:
-        data_review()
-        try:
-            data_delete()
-        except:
-            print('Wrong input try again')
-    elif choice == 4:
-        data_review()
-        try:
-            data_update()
-        except:
-            print('Wrong input try again')
+    try:
+        event, values = window.read()
+        if event == sg.WINDOW_CLOSED:
+            break
+        elif event == 'function':
+            choosen_function = values['function']
+            if choosen_function == 'Add':
+                window_add()
+            elif choosen_function == 'Update':
+                window_update()
+            elif choosen_function == 'Delete':
+                window_delete()
+    except: 
+        print('No changes')
 
-
-
-
+window.close()
