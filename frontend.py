@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
-from processing_data import data_input, data_update, data_delete
+from processing_data import data_input, data_update, data_delete, data_review
+
 
 def window_add():
     layout = [
@@ -21,8 +22,15 @@ def window_add():
 
 def window_update():
     default_info = ['name', 'surname', 'birth date', 'responsibility', 'salary']
+    workers = data_review()
+    workers_id = []
+    workers_name = []
+    for worker in workers:
+        workers_id.append(worker[0])
+        workers_name.append(worker[1])
+
     layout = [
-        [sg.Input('ID', key='ID', enable_events=True, s=(50,70))],
+        [sg.Combo(workers_name, key='name', enable_events=True, s=(50,70))],
         [sg.Combo(default_info, key='choice', enable_events=True)],
         [sg.Input('New value', key='new input', enable_events=True)],
         [sg.Button('Enter', key='exit', enable_events=True, size=(5, 1))]
@@ -33,7 +41,10 @@ def window_update():
         event, values = window.read()
         if event in (sg.WIN_CLOSED, 'exit'):
             break
-    data_update(values['ID'], values['choice'], values['new input'])
+        
+    index = workers_name.index(values['name'])
+    ID = workers_id[index]
+    data_update(ID, values['choice'], values['new input'])
     window.close()
 
 def window_delete():
